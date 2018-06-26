@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="jquery-easyui-1.5.5.4/themes/default/easyui.css" />
+		<link rel="stylesheet" type="text/css" href="jquery-easyui-1.5.5.4/themes/icon.css" />
+		<script type="text/javascript" src="jquery-easyui-1.5.5.4/jquery.min.js"></script>
+		<script type="text/javascript" src="jquery-easyui-1.5.5.4/jquery.easyui.min.js"></script>
+		<style type="text/css">
+			.calendar-last {
+				color: red;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+				$('#dg').datagrid({
+					url: './data/data01.json',
+					method: 'GET',
+					columns: [
+						[{
+								field: 'code',
+								title: 'Code1',
+								width: 100,
+								align: 'left',
+								formatter: function(value, row, index) {
+									if(index % 2 == 0) {
+										return value
+									} else {
+										return '不展示';
+									}
+								}
+							},
+							{
+								field: 'checkbox',
+								checkbox: true
+							},
+							{
+								field: 'name',
+								title: 'Name1',
+								width: 100,
+								align: 'center'
+							},
+							{
+								field: 'price',
+								title: 'Price1',
+								width: 100,
+								align: 'right'
+							},
+							{
+								field: 'editor1',
+								title: 'editor1',
+								width: 100,
+								editor: {
+									type: 'combobox',
+									options: {
+										valueField: 'editor1',
+										textField: 'name',
+										data: [1, 2, 3, 4, 5],
+										required: true
+									}
+								}
+							}
+						]
+					],
+					fitColumns: true,
+					resizeHandle: 'both',
+					toolbar: [{
+						iconCls: 'icon-edit',
+						handler: function() {
+							alert('edit')
+						}
+					}, {
+						iconCls: 'icon-help',
+						handler: function() {
+							alert('help')
+						}
+					}],
+					striped: true,
+					pagination: true,
+					rownumbers: true,
+					singleSelect: true,
+					pageNumber: 3,
+					queryParams: {
+						'a': 'aa',
+						'b': 'bb'
+					},
+					sortName: 'price',
+					sortOrder: 'desc',
+					rowStyler: function(index, row) {
+						if('李杀神' == row.name) {
+							return 'color: red';
+						}
+						if('王诛魔' == row.name) {
+							return 'color: black';
+						}
+						if('刘斩仙' == row.name) {
+							return 'color: blue';
+						}
+						if('赵日天' == row.name) {
+							return 'background-color: black;color: white';
+						}
+
+					},
+					loadFilter: function(data) {
+						data.rows[0].name = '赵日天';
+						return data;
+					},
+					onLoadSuccess: function(data) {
+						alert('加载成功' + data);
+					},
+					onLoadError: function() {
+						alert('加载失败');
+					},
+					onClickCell: function(rowIndex, field, value) {
+						alert(rowIndex + '-' + field + '-' + value);
+					},
+					onSortColumn: function(sort, order) {
+						alert(sort + '-' + order);
+					},
+					onHeaderContextMenu: function(e, field) {
+						alert(e + '-' + field);
+					}
+				});
+				$('#dt').datetimebox();
+				console.log($('#dg').datagrid('getFooterRows'));
+				$('#dg').datagrid('loading');
+			});
+
+			function query1() {
+				$('#dg').datagrid('load', {
+					c: 'c',
+					d: 'd'
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		<input id="dt" style="width:200px">
+		<button onclick="query1()">查询</button>
+		<div id="dg" class="easyui-datagrid">
+		</div>
+	</body>
+
+</html>
